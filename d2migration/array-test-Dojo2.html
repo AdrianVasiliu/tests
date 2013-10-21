@@ -1,0 +1,327 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>dojo/_base/array tests</title>
+		
+		<script src="//archive.dojotoolkit.org/nightly/checkout/dojo/dojo.js"></script>
+		<script type="text/javascript">
+	
+	require(["doh", "dojo/_base/lang"], function(doh, lang){
+
+	doh.register("tests._base.array", [
+		function testIndexOf(t){
+			var foo = [128, 256, 512];
+			var bar = ["aaa", "bbb", "ccc"];
+
+			t.assertEqual(1, [45, 56, 85].indexOf(56));
+			t.assertEqual(1, [Number, String, Date].indexOf(String));
+			t.assertEqual(1, foo.indexOf(foo[1]));
+			t.assertEqual(2, foo.indexOf(foo[2]));
+			t.assertEqual(1, bar.indexOf(bar[1]));
+			t.assertEqual(2, bar.indexOf(bar[2]));
+			/* WARNING in migration guideline
+			t.assertEqual(-1, {a:1}.indexOf("a")); */
+
+			foo.push(bar);
+			t.assertEqual(3, foo.indexOf(bar));
+		},
+
+		function testIndexOfFromIndex(t){
+			var foo = [128, 256, 512];
+			var bar = ["aaa", "bbb", "ccc"];
+
+			t.assertEqual(-1, [45, 56, 85].indexOf(56, 2));
+			t.assertEqual(1, [45, 56, 85].indexOf(56, 1));
+			t.assertEqual(1, [45, 56, 85].indexOf(56, -3));
+			// Make sure going out of bounds doesn't throw us in an infinite loop
+			t.assertEqual(-1, [45, 56, 85].indexOf(56, 3));
+		},
+
+		function testLastIndexOf(t){
+			var foo = [128, 256, 512];
+			var bar = ["aaa", "bbb", "aaa", "ccc"];
+
+			t.assertEqual(1, [45, 56, 85].lastIndexOf(56));
+			t.assertEqual(1, [Number, String, Date].lastIndexOf(String));
+			t.assertEqual(1, foo.lastIndexOf(foo[1]));
+			t.assertEqual(2, foo.lastIndexOf(foo[2]));
+			t.assertEqual(1, bar.lastIndexOf(bar[1]));
+			t.assertEqual(2, bar.lastIndexOf(bar[2]));
+			t.assertEqual(2, bar.lastIndexOf(bar[0]));
+		},
+
+		function testLastIndexOfFromIndex(t){
+			t.assertEqual(1, [45, 56, 85].lastIndexOf(56, 1));
+			t.assertEqual(-1, [45, 56, 85].lastIndexOf(85, 1));
+			t.assertEqual(-1, [45, 56, 85].lastIndexOf(85, -2));
+			t.assertEqual(0, [45, 56, 45].lastIndexOf(45, 0));
+		},
+
+		function testForEach(t){
+			var foo = [128, "bbb", 512];
+			foo.forEach(function(elt, idx, array){
+				switch(idx){
+					case 0: t.assertEqual(128, elt); break;
+					case 1: t.assertEqual("bbb", elt); break;
+					case 2: t.assertEqual(512, elt); break;
+					default: t.assertTrue(false);
+				}
+			});
+
+			/* WARNING in migration guideline
+			var noException = true;
+			try{
+				undefined.forEach(function(){});
+			}catch(e){
+				noException = false;
+			}
+			t.assertTrue(noException);
+			*/
+		},
+
+		function testForEach_str(t){
+			var bar = 'abc';
+			bar.split("").forEach(function(elt, idx, array){
+				switch(idx){
+					case 0: t.assertEqual("a", elt); break;
+					case 1: t.assertEqual("b", elt); break;
+					case 2: t.assertEqual("c", elt); break;
+					default: t.assertTrue(false);
+				}
+			});
+		},
+		// FIXME: test forEach w/ a NodeList()?
+
+		function testForEach_string_callback(t){
+			// Test using strings as callback", which accept the parameters with
+			// the names "item", "index" and "array"!
+			var foo = [128, "bbb", 512];
+			// Test that the variable "item" contains the value of each item.
+			var obj = {
+				_res: ""
+			};
+			foo.forEach(new Function("item", "index", "array", "this._res += item"), obj);
+			t.assertEqual(obj._res, "128bbb512");
+			// Test that the variable "index" contains each index.
+			obj._res = [];
+			// WARNING in migration guidelines about caching
+			foo.forEach(new Function("item", "index", "array", "this._res.push(index)"), obj);
+			t.assertEqual(obj._res, [0,1,2]);
+			// Test that the variable "array" always contains the entire array.
+			obj._res = [];
+			foo.forEach(new Function("item", "index", "array", "this._res.push(array)"), obj);
+			t.assertEqual(obj._res, [
+				[128, "bbb", 512],
+				[128, "bbb", 512],
+				[128, "bbb", 512]
+			]);
+			/* WARNING in migration guide
+			// Catch undefined variable usage (I used to use "i" :-)).
+			var caughtException = false;
+			try{
+				foo.forEach("this._res += arr[i];", obj);
+			}catch(e){
+				caughtException = true;
+			}
+			t.assertTrue(caughtException);
+			*/
+		},
+
+		// FIXME: test forEach w/ a NodeList()?
+		function testEvery(t){
+			var foo = [128, "bbb", 512];
+
+			t.assertTrue(
+				foo.every(function(elt, idx, array){
+					t.assertEqual(Array, array.constructor);
+					t.assertTrue(lang.isArray(array));
+					t.assertTrue(typeof idx == "number");
+					if(idx == 1){ t.assertEqual("bbb" , elt); }
+					return true;
+				})
+			);
+
+			t.assertTrue(
+				foo.every(function(elt, idx, array){
+					switch(idx){
+						case 0: t.assertEqual(128, elt); return true;
+						case 1: t.assertEqual("bbb", elt); return true;
+						case 2: t.assertEqual(512, elt); return true;
+						default: return false;
+					}
+				})
+			);
+
+			t.assertFalse(
+				foo.every(function(elt, idx, array){
+					switch(idx){
+						case 0: t.assertEqual(128, elt); return true;
+						case 1: t.assertEqual("bbb", elt); return true;
+						case 2: t.assertEqual(512, elt); return false;
+						default: return true;
+					}
+				})
+			);
+
+		},
+
+		function testEvery_str(t){
+			var bar = 'abc';
+			t.assertTrue(
+				bar.split("").every(function(elt, idx, array){
+					switch(idx){
+						case 0: t.assertEqual("a", elt); return true;
+						case 1: t.assertEqual("b", elt); return true;
+						case 2: t.assertEqual("c", elt); return true;
+						default: return false;
+					}
+				})
+			);
+
+			t.assertFalse(
+				bar.split("").every(function(elt, idx, array){
+					switch(idx){
+						case 0: t.assertEqual("a", elt); return true;
+						case 1: t.assertEqual("b", elt); return true;
+						case 2: t.assertEqual("c", elt); return false;
+						default: return true;
+					}
+				})
+			);
+		},
+		// FIXME: test NodeList for every()?
+
+		function testSome(t){
+			var foo = [128, "bbb", 512];
+			t.assertTrue(
+				foo.some(function(elt, idx, array){
+					t.assertEqual(3, array.length);
+					return true;
+				})
+			);
+
+			t.assertTrue(
+				foo.some(function(elt, idx, array){
+					return idx < 1;
+
+				})
+			);
+
+			t.assertFalse(
+				foo.some(function(elt, idx, array){
+					return false;
+				})
+			);
+
+			t.assertTrue(
+				foo.some(function(elt, idx, array){
+					t.assertEqual(Array, array.constructor);
+					t.assertTrue(lang.isArray(array));
+					t.assertTrue(typeof idx == "number");
+					if(idx == 1){ t.assertEqual("bbb" , elt); }
+					return true;
+				})
+			);
+		},
+
+		function testSome_str(t){
+			var bar = 'abc';
+			t.assertTrue(
+				bar.split("").some(function(elt, idx, array){
+					t.assertEqual(3, array.length);
+					switch(idx){
+						case 0: t.assertEqual("a", elt); return true;
+						case 1: t.assertEqual("b", elt); return true;
+						case 2: t.assertEqual("c", elt); return true;
+						default: return false;
+					}
+				})
+			);
+
+			t.assertTrue(
+				bar.split("").some(function(elt, idx, array){
+					switch(idx){
+						case 0: t.assertEqual("a", elt); return true;
+						case 1: t.assertEqual("b", elt); return true;
+						case 2: t.assertEqual("c", elt); return false;
+						default: return true;
+					}
+				})
+			);
+
+			t.assertFalse(
+				bar.split("").some(function(elt, idx, array){
+					return false;
+				})
+			);
+		},
+		// FIXME: need to add scoping tests for all of these!!!
+
+		function testFilter(t){
+			var foo = ["foo", "bar", 10];
+
+			t.assertEqual(["foo"],
+				foo.filter(function(elt, idx, array){
+					return idx < 1;
+				})
+			);
+
+			t.assertEqual(["foo"],
+				foo.filter(function(elt, idx, array){
+					return elt == "foo";
+				})
+			);
+
+			t.assertEqual([],
+				foo.filter(function(elt, idx, array){
+					return false;
+				})
+			);
+
+			t.assertEqual([10],
+				foo.filter(function(elt, idx, array){
+					return typeof elt == "number";
+				})
+			);
+		},
+
+		function testFilter_str(t){
+			var foo = "thinger blah blah blah";
+			t.assertEqual(["t", "h", "i"],
+				foo.split("").filter(function(elt, idx, array){
+					return idx < 3;
+				})
+			);
+
+			t.assertEqual([],
+				foo.split("").filter(function(elt, idx, array){
+					return false;
+				})
+			);
+		},
+
+		function testMap(t){
+			t.assertEqual([],
+				[].map(function(){ return true; })
+			);
+
+			t.assertEqual([1, 2, 3],
+				["cat", "dog", "mouse"].map(function(elt, idx, array){
+					return idx+1;
+				})
+			);
+		}
+	]);
+	
+	doh.run();
+});
+		</script>
+		<style type="text/css">
+		
+		</style>
+	</head>
+	<body>
+	
+	</body>
+</html>
+
