@@ -1,7 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
-		<title>dojo/_base/array tests</title>
+		<title>Tests for migration of dojo/_base/array</title>
+		
+		<!-- Standalone repackaging of https://github.com/dojo/dojo/blob/master/tests/_base/array.js
+			migrated to use the ES5 replacements of the dojo/_base/array APIs.
+			It implements the migration as documented in 
+			https://docs.google.com/spreadsheet/ccc?key=0AmJUppaL5_sqdG1tdTY1NkZzY045QlgtYlIzVE13bGc&usp=drive_web#gid=0
+			In some corner cases, the original testing code is commented out because there is no D2 equivalent 
+			(as also mentioned in the migration guide). 
+		-->
 		
 		<script src="//archive.dojotoolkit.org/nightly/checkout/dojo/dojo.js"></script>
 		<script type="text/javascript">
