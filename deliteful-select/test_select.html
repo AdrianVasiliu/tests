@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" 
+		content="initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+
+<title>Select</title>
+
+<!-- Test for the following points:
+* Whether it is possible to style a native select such that it looks 
+  similar to a native select styled using bootstrap's form-control CSS rule,
+  while working around the issue present with bootstrap: different rendering
+  in FF and IE than in Chrome (all on desktop).
+    The answer seems to be YES.
+    Remark: difference of rendering accross browsers remain for the dropdown
+    itself (different scrollbar in FF vs Chrome, and furthermore Android/iOS
+    each using its own very different rendering of the dropdown).
+* Whether it is possible to implement autoComplete using a native select.
+  Here, the question is what happens when adding/removing options while the 
+  dropdown is already open.
+    The answer seems to be NO (because IE/Win7/8 closes the dropdown, Chrome/Win7
+    breaks the scrollbar in the dropdown, and Android/iOS ignore the change of
+    options while the dropdown is open; only FF/desktop behaves corectly).
+-->
+
+<!-- 
+	SO "Bootstrap 3 Styled Select dropdown looks ugly in Firefox on OS X"
+	http://stackoverflow.com/questions/20366166/bootstrap-3-styled-select-dropdown-looks-ugly-in-firefox-on-os-x
+	Related FF bug:
+	https://bugzilla.mozilla.org/show_bug.cgi?id=649849
+-->
+
+<!-- For comparison purposes, we use bootstrap's form-control CSS rule from here: --> 
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<!-- (Loading bootstrap CSS does not seem to have side-effects on the styling of instances
+	of select which do not use form-control.) -->
+
+<!--
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+-->
+
+<style type="text/css">
+
+* {
+	box-sizing: border-box;
+}
+
+html, body {
+	height: 100%;
+	margin: 5px;
+	padding: 0;
+}
+
+.d-select-no-wrapper {
+	display: block;
+	height: 34px;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.42857143;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background-color: #fff;
+	background-image: none;
+}
+
+.d-select-wrapper-inner {
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.42857143;
+	margin: -1px; /* to compensate the +1px border on d-select-wrapper-outer */
+	height: 34px;
+	color: #555;
+	/* background-color and background-image needed for Android, bad for FF and IE 10/Win7 */
+	/*
+	background-color: #fff;
+	background-image: none;
+	*/
+	/* bootstrap's form-control also has:
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+	-webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	*/
+}
+
+/* wrapping the select in a span to avoid rounding the select element itself,
+  which produces a different rendering on FF and IE than in Chrome on desktop */
+.d-select-wrapper-outer {
+	float: left;
+	margin: 0;
+	padding: 0;
+	border: 1px solid #ccc; 
+	border-radius: 4px;
+	overflow: hidden; /* clip for the rounding */
+}
+</style>
+
+<script type="text/javascript">
+function onload() {
+	var select1 = document.getElementById("select1"),
+		select2 = document.getElementById("select2"),
+		select3 = document.getElementById("select3"),
+		select4 = document.getElementById("select4");
+	var nOptions = 40;
+	var counter = 0;
+	
+	function addOptions(select, min, max) {
+		var fragment = document.createDocumentFragment();
+		var option;
+		for (var i = min; i <= max; i++) {
+			option = document.createElement( 'option' );
+			option.value = option.text = 
+				"Option " + i + 
+				(counter > 0 ? (" update #" + counter) : "");
+			fragment.appendChild( option );
+		}
+		select.appendChild(fragment);
+	}
+	
+	function removeAllOptions(select) {
+		select.innerHTML = "";
+	}
+	
+	/* attempt to workaround IE's behavior which is to close 
+	 the dropdown as soon as an option is added/removed - but this doesn't do the trick */
+	/* function openDropdown(node) {
+		// var event = document.createEvent('MouseEvents');
+		// event.initMouseEvent('mousedown', true, true, window);
+		event.initMouseEvent('mouseup', true, true, window);
+		// event.initMouseEvent('click', true, true, window);
+		node.dispatchEvent(event);
+		// node.focus();
+		// node.click();
+	}; */
+	
+	// For checking what happens if the set of options is
+	// modified while the dropwdown is open.
+	function updateOptionsAsync(select, min, max) {
+		// Done asynchronously to give you time to open the dropdown
+		// such that we can check what happens when adding options with the
+		// dropdown open (simulating what happens during autoComplete).
+		setTimeout(function(){
+			removeAllOptions(select); // removing then adding works around misbehavior of
+			// the scrollbar of the dropdown in Chrome 34/Win7.
+			addOptions(select, min, max);
+			// select.size = select.options.length;
+			// openDropdown(select);
+		}, 3000);
+	};
+	
+	updateOptions = function () {
+		counter++;
+		updateOptionsAsync(select1, 1, nOptions);
+		updateOptionsAsync(select2, 1, nOptions);
+		updateOptionsAsync(select3, 1, nOptions);
+		updateOptionsAsync(select4, 1, nOptions);
+	};
+	
+	// Fill the selects with options
+	
+	addOptions(select1, 1, nOptions);
+	addOptions(select2, 1, nOptions);
+	addOptions(select3, 1, nOptions);
+	addOptions(select4, 1, nOptions);
+};
+</script>
+</head>
+<body onload="onload()">
+
+Click <button onclick="updateOptions()">here</button> to update the options 
+of the first select (with a 3 sec. delay to have time to open a 
+dropdown before actually done).
+
+<br/><br/><br/>
+
+1. Select styled for deliteful and wrapped in a rounded span for working around the
+FF/IE rendering issue:
+<br/>
+<span class="d-select-wrapper-outer">
+	<select class="d-select-wrapper-inner" id="select1">
+	</select>
+</span>
+
+<br/><br/><br/>
+
+2. Select styled for deliteful (with no wrapper; for Chrome/desktop, and Android/iOS):
+<br/>
+<select class="d-select-no-wrapper" id="select2">
+</select>
+
+<br/>
+
+3. Select styled by bootstrap's form-control CSS rule 
+(here, with hardcoded width because bootstrap's form-control includes width: 100%; 
+note that it renders a bit differently on Chrome versus FF and IE):
+<br/>
+<select class="form-control" style="width: 117px" id="select3">
+</select>
+
+<br/>
+
+4. Unstyled select (for comparison):
+<br/>
+<select id="select4">
+</select>
+
+</html>
