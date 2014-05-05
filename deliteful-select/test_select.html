@@ -223,13 +223,26 @@ note that it renders a bit differently on Chrome versus FF and IE):
 
 <br/><br/>
 
-6. select styled globally with larger font-size, border-radius, background-color, padding, and font-family: Courier:
+6. select styled globally with larger font-size, font-family:Courier, border-radius, background-color, and padding:
 <br/>
-<select style="font-size: 24px; border-radius: 15px; background-color: red; padding: 6px 12px; font-family: Courier;" 
+<select style="font-size: 24px; font-family: Courier; border-radius: 15px; background-color: red; padding: 6px 12px;" 
 	id="select6">
 	<option>Option 1</option>
 	<option>Option 2</option>
 	<option>Option 3</option>
+</select>
+
+<br/><br/>
+
+7. Test for support of optgroup
+<br/>
+<select id="select7">
+	<optgroup label="Group 1">
+	<option>Option 1</option>
+	<option>Option 2</option>
+	<optgroup label="Group 2">
+	<option>Option 3</option>
+	<option>Option 4</option>
 </select>
 
 <br/><br/>
