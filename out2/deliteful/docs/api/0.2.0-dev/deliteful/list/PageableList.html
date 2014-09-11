@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Module: deliteful/list/PageableList</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <style>
+        [inherited] {
+            display: none;
+        }
+
+        [inherited-show] {
+            display: block;
+        }
+    </style>
+    <script>
+        function toggleInherited(event) {
+            var shouldShow = event.type !== "DOMContentLoaded" && !document.querySelector("[inherited][inherited-show]");
+            Array.prototype.forEach.call(document.querySelectorAll("dl"), function (elem) {
+                var inherited = elem.querySelectorAll("[inherited]");
+                Array.prototype.forEach.call(inherited, function (elem) {
+                    if (shouldShow) {
+                        elem.setAttribute("inherited-show", "");
+                    } else {
+                        elem.removeAttribute("inherited-show");
+                    }
+                });
+                if (inherited.length > 0) {
+                    var header = elem.previousElementSibling;
+                    if (header.tagName === "H3") {
+                        header.style.display = parseInt(document.defaultView.getComputedStyle(elem).height) > 0 ? "" : "none";
+                    }
+                }
+            });
+            if (event.type !== "DOMContentLoaded") {
+                event.target.innerHTML = (shouldShow ? "Hide" : "Show") + " inherited";
+            } else if (!document.querySelector("[inherited]")) {
+                var toggleLink = document.getElementById("toggleinherited");
+                if (toggleLink) {
+                    toggleLink.style.display = "none";
+                }
+            }
+        }
+        window.addEventListener("DOMContentLoaded", toggleInherited);
+    </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Module: deliteful/list/PageableList</h1>
+
+    
+
+
+
+<section>
+
+<header>
+    <h2>
+    deliteful/list/PageableList
+    </h2>
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+
+    
+        
+
+        
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    <a id="toggleinherited" href="#" onclick="toggleInherited(event)">Show inherited</a>
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        <dl>
+            
+            
+<dt>
+    <h4 class="name" id="autoPaging"><span class="type-signature"></span>autoPaging<span class="type-signature"> :boolean</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Indicates whether or not to use auto paging. If true, automatically loads the next or previous page when
+the scrolling reaches the bottom or the top of the list content.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">boolean</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>false</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="../../PageableList.js.html">deliteful/list/PageableList.js</a>, <a href="../../PageableList.js.html#line216">line 216</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt>
+    <h4 class="name" id="hideOnPageLoad"><span class="type-signature"></span>hideOnPageLoad<span class="type-signature"> :boolean</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Indicates whether or not to hide the content of the list when loading a new page.
+If true, the content of the list is hidden by a loading panel (displaying a progress
+indicator and an optional label defined with the property loadingMessage)
+while its content is updated with a new page of data.
+This attribute is ignored if autoPaging is true.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">boolean</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>false</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="../../PageableList.js.html">deliteful/list/PageableList.js</a>, <a href="../../PageableList.js.html#line237">line 237</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt>
+    <h4 class="name" id="loadNextMessage"><span class="type-signature"></span>loadNextMessage<span class="type-signature"> :string</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The message displayed on the next page loader when it can be clicked
+to load the next page. This message can contains placeholder for the
+List attributes to be replaced by their runtime value. For example, the
+message can include the value of the pageLength attribute by using the
+placeholder <code>${pageLength}</code>.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">string</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>localized version of "Click to load ${pageLength} more items"</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="../../PageableList.js.html">deliteful/list/PageableList.js</a>, <a href="../../PageableList.js.html#line208">line 208</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt>
+    <h4 class="name" id="loadPreviousMessage"><span class="type-signature"></span>loadPreviousMessage<span class="type-signature"> :string</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The message displayed on the previous page loader when it can be clicked
+to load the previous page. This message can contains placeholder for the
+List attributes to be replaced by their runtime value. For example, the
+message can include the value of the pageLength attribute by using the
+placeholder <code>${pageLength}</code>.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">string</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>localized version of "Click to load ${pageLength} more items"</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="../../PageableList.js.html">deliteful/list/PageableList.js</a>, <a href="../../PageableList.js.html#line197">line 197</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt>
+    <h4 class="name" id="maxPages"><span class="type-signature"></span>maxPages<span class="type-signature"> :number</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The maximum number of pages to display at the same time. If a new page is loaded while
+the maximum number of pages is already displayed, another page will be unloaded from the list
+to make room for the new page.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">number</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>0</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="../../PageableList.js.html">deliteful/list/PageableList.js</a>, <a href="../../PageableList.js.html#line186">line 186</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt>
+    <h4 class="name" id="pageLength"><span class="type-signature"></span>pageLength<span class="type-signature"> :number</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>if &gt; 0, enable paging while defining the number of items to display per page.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">number</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>0</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="../../PageableList.js.html">deliteful/list/PageableList.js</a>, <a href="../../PageableList.js.html#line177">line 177</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="../../deliteful/Button.html">deliteful/Button</a></li><li><a href="../../deliteful/CheckBox.html">deliteful/CheckBox</a></li><li><a href="../../deliteful/LinearLayout.html">deliteful/LinearLayout</a></li><li><a href="../../deliteful/list/CategoryRenderer.html">deliteful/list/CategoryRenderer</a></li><li><a href="../../deliteful/list/ItemRenderer.html">deliteful/list/ItemRenderer</a></li><li><a href="../../deliteful/list/List.html">deliteful/list/List</a></li><li><a href="../../deliteful/list/PageableList.html">deliteful/list/PageableList</a></li><li><a href="../../deliteful/list/Renderer.html">deliteful/list/Renderer</a></li><li><a href="../../deliteful/ProgressBar.html">deliteful/ProgressBar</a></li><li><a href="../../deliteful/ProgressIndicator.html">deliteful/ProgressIndicator</a></li><li><a href="../../deliteful/RadioButton.html">deliteful/RadioButton</a></li><li><a href="../../deliteful/ScrollableContainer.html">deliteful/ScrollableContainer</a></li><li><a href="../../deliteful/Select.html">deliteful/Select</a></li><li><a href="../../deliteful/SidePane.html">deliteful/SidePane</a></li><li><a href="../../deliteful/Slider.html">deliteful/Slider</a></li><li><a href="../../deliteful/StarRating.html">deliteful/StarRating</a></li><li><a href="../../deliteful/Switch.html">deliteful/Switch</a></li><li><a href="../../deliteful/Toaster.html">deliteful/Toaster</a></li><li><a href="../../deliteful/ToasterMessage.html">deliteful/ToasterMessage</a></li><li><a href="../../deliteful/Toggle.html">deliteful/Toggle</a></li><li><a href="../../deliteful/ToggleButton.html">deliteful/ToggleButton</a></li><li><a href="../../deliteful/ViewStack.html">deliteful/ViewStack</a></li></ul><h3>Classes</h3><ul><li><a href="../../deliteful/list/Pageable.html">module:deliteful/list/Pageable</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha7</a> on Thu Sep 11 2014 14:27:04 GMT+0200 (Romance Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>
